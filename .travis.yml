@@ -1,0 +1,30 @@
+os:
+  - linux
+dist: trusty
+language: generic
+sudo: false
+cache:
+  directories:
+    - "$HOME/texlive/2017/texmf-var/luatex-cache"
+before_install:
+  - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/install-tex.sh
+  - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/tlmgr.sh
+  - wget -O jlisting.sty https://raw.githubusercontent.com/h-kitagawa/plistings/master/plistings.sty
+  - chmod +x install-tex.sh tlmgr.sh
+install:
+  - . ./install-tex.sh
+  - ./tlmgr.sh install collection-langjapanese collection-fontsrecommended latexmk
+    comment fragments enumitem
+  - git clone https://github.com/EzoeRyou/cpp17book.git
+script:
+  - cp ./latexmkrc ./cpp17book/AsciiDWANGO/
+  - cp ./jlisting.sty ./cpp17book/AsciiDWANGO/
+  - cd ./cpp17book/AsciiDWANGO/
+  - latexmk cpp17book
+after_success:
+  - cd ../../
+  - cp ./cpp17book/AsciiDWANGO/cpp17book.pdf ./
+  - ./deploy.sh
+env:
+  global:
+    secure: xqxDf+Ti96Q3XTqHgrQclhHQZE9m/EhNDY7EjvnXHr2RGr6f1b3hFSrnvrbFayb7+3a4TLKvHO4eVy8J8ab5vMVuBih1N1lDhJuVfaqPN8mKkTK3jcDkA9UkJ9Jz3QvNVf12WbEiz+cEveQ5NlmUeB8VIYRCd+ySzLSzx3A5eg0Duy6heei0U3YMwByUMSNIOQzz1nI67ZoyTs+/mnD6TE0OGfGOHsl5L4FhCX8JnFkM4PMjIa8BOm6v0UobHReOR/i4YwNpz0pcWkYAOSw/GnIzF/l4kq/xZWJgJQLAF5qMyxjc+SsTzJ4Wt/0rA+YVQkzqTlrmKOcDEHKanTnfJSZuIWOHi9k6P6jBiRkIxoyFS7pi+kEoxLclA+oyHfNfhz3UL8GgF5Uk1tnrIJWIhRgmCEWiJXZu9jgjgMwBYPJRmUeElFrAWrRSHWWePiaHhQkx+8n600wd8nQxG3ufJa+Vffvq8yaqBtFAIxE60THAD0gyOU44O2TJg4OTmwg5qtaRRLsUfnxn4VFixxX1mJBImYCVSEku9QIIVoVwaxpb3O0LzXaBv6HhrG4xZb+mfdbrWt45Qvnm6IJ+9E1AILEg0DM2xQrWKbTIIDXxcG9MTrUo/cFU4j7ul7qJ3X6PLlyjCTpktgIOG/sUspB1K7NWl5/NJVX7ABy9HSQaUOQ=
