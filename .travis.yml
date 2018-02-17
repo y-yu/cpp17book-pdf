@@ -15,7 +15,7 @@ before_install:
 install:
   - . ./install-tex.sh
   - ./tlmgr.sh install collection-langjapanese collection-fontsrecommended latexmk
-    comment fragments enumitem
+    comment fragments enumitem ucs
   - git clone https://github.com/EzoeRyou/cpp17book.git
 script:
   - cp ./latexmkrc ./cpp17book/AsciiDWANGO/
